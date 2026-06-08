@@ -317,7 +317,9 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label>📦 PRODUCT <span class="required">*</span></label>
-                                <input type="text" id="s2Product" required placeholder="e.g. F1 Shake">
+                                <select id="s2Product" required>
+                                    <option value="">-- Select Product --</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label>📅 FIRST PURCHASE DATE <span class="required">*</span></label>
@@ -373,6 +375,7 @@
         $(document).ready(function () {
             loadCoaches();
             loadCustomerStats();
+            loadProducts();
 
             $('#s2CustomerForm').submit(function (e) {
                 e.preventDefault();
@@ -435,6 +438,25 @@
                 },
                 error: function (xhr, status, error) {
                     console.error('Error loading customer stats: ', error);
+                }
+            });
+        }
+
+        function loadProducts() {
+            $.ajax({
+                url: '/api/Products/Get',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    var s2ProductDropdown = $('#s2Product');
+                    s2ProductDropdown.empty();
+                    s2ProductDropdown.append('<option value="">-- Select Product --</option>');
+                    $.each(data, function (index, item) {
+                        s2ProductDropdown.append($('<option></option>').val(item.productName).text(item.productName));
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error loading products: ', error);
                 }
             });
         }
