@@ -23,4 +23,4 @@ COPY --from=build /app/publish .
 EXPOSE 8080
 
 # Start the application
-ENTRYPOINT ["dotnet", "RM_CMS.dll"]
+ENTRYPOINT ["dotnet", "HFNC_Coaches.dll"]
