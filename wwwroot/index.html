@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>People Registry</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/peopleRegistry.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: inline-block; width: 150px; }
+        input, select, textarea { width: 250px; padding: 5px; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h2>Add New Person</h2>
+    <form id="personForm">
+        <div class="form-group">
+            <label>Full Name:</label>
+            <input type="text" id="fullName" required>
+        </div>
+        <div class="form-group">
+            <label>Phone Number:</label>
+            <input type="text" id="phoneNumber" required>
+        </div>
+        <div class="form-group">
+            <label>Entry Type:</label>
+            <select id="entryType">
+                <option value="">-- Select Entry Type --</option>
+                <option value="Prospect">Prospect</option>
+                <option value="Customer">Customer</option>
+                <option value="Distributor">Distributor</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Invited By:</label>
+            <input type="text" id="invitedBy">
+        </div>
+        <div class="form-group">
+            <label>Current Status:</label>
+            <select id="currentStatus">
+                <option value="">-- Select Status --</option>
+                <option value="New">New</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>System Stage:</label>
+            <select id="systemStage">
+                <option value="">-- Select System Stage --</option>
+                <option value="S1 - Prospect">S1 - Prospect</option>
+                <option value="S2 - Customer">S2 - Customer</option>
+                <option value="S3 - Distributor">S3 - Distributor</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Last Contact Date:</label>
+            <input type="date" id="lastContactDate">
+        </div>
+        <div class="form-group">
+            <label>Notes:</label>
+            <textarea id="notes" rows="3"></textarea>
+        </div>
+        <button type="button" id="btnSave" style="padding: 10px 20px; cursor: pointer;">Save</button>
+    </form>
+
+    <hr style="margin: 30px 0;">
+
+    <h2>People Registry List</h2>
+    <div id="peopleListContainer">
+        <table id="peopleTable">
+            <thead>
+                <tr>
+                    <th>ID</th><th>Full Name</th><th>Phone Number</th><th>Entry Type</th>
+                    <th>Invited By</th><th>Status</th><th>System Stage</th><th>Last Contact</th><th>Notes</th>
+                </tr>
+            </thead>
+            <tbody><!-- Populated dynamically by jQuery --></tbody>
+        </table>
+    </div>
+</body>
+</html>

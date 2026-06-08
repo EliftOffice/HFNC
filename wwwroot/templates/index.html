@@ -3,229 +3,830 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HFNC Coaches</title>
+    <title>Master People Registry - HFNC Team Builder</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <style>
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI',sans-serif;
+            font-family: 'Segoe UI', sans-serif;
         }
 
         body {
+            background: linear-gradient(135deg, #1a4d3e 0%, #2d6a54 50%, #1f5843 100%);
             min-height: 100vh;
-            background: linear-gradient(135deg,#042d1c,#0d5c3a,#083c28);
+            color: #333;
+            padding: 20px;
+        }
+
+        /* Header */
+        .top-header {
+            background: linear-gradient(135deg, #2d6a54 0%, #1a4d3e 100%);
+            padding: 20px 30px;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
             color: white;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .header-left h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .header-left p {
+            font-size: 12px;
+            color: #d4af7a;
+            letter-spacing: 1px;
+            margin: 4px 0 0 0;
+        }
+
+        .header-right {
+            background: #d4af7a;
+            color: #1a4d3e;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1px;
         }
 
         .container {
-            width: 100%;
-            max-width: 1200px;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
-        .header {
+        .page-title {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .badge {
             display: inline-block;
-            padding: 8px 16px;
-            background: rgba(255,255,255,.08);
-            border: 1px solid rgba(255,215,0,.3);
-            border-radius: 50px;
-            font-size: 12px;
+            background: #d4af7a;
+            color: #1a4d3e;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
             letter-spacing: 1px;
+            margin-bottom: 10px;
         }
 
-        h1 {
-            margin-top: 15px;
-            font-size: 42px;
+        .page-title h2 {
+            font-size: 38px;
+            color: white;
+            margin: 10px 0;
             font-weight: 700;
         }
 
-        .subtitle {
-            margin-top: 10px;
-            color: #d1d5db;
+        .page-title p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
         }
 
+        /* Main Content Grid */
         .content {
             display: grid;
             grid-template-columns: 2fr 1fr;
             gap: 25px;
+            margin-top: 30px;
         }
 
-        .card {
-            background: rgba(255,255,255,.06);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255,255,255,.1);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 15px 40px rgba(0,0,0,.25);
+        /* Form Card */
+        .form-card {
+            background: white;
+            border-radius: 16px;
+            padding: 0;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
         }
 
-        .form-title {
-            font-size: 22px;
-            margin-bottom: 25px;
+        .form-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #2d6a54 0%, #1a4d3e 100%);
+            color: white;
+            padding: 20px 35px;
+            margin-bottom: 0;
         }
 
-        .form-group {
+        .form-card-header::before {
+            content: '📝';
+            font-size: 24px;
+        }
+
+        .form-card-header h3 {
+            font-size: 18px;
+            color: white;
+            font-weight: 700;
+            margin: 0;
+        }
+        
+        .form-card-content {
+            padding: 35px;
+        }
+
+        .form-card-helper {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
             margin-bottom: 18px;
         }
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 14px;
+        .form-row.full {
+            grid-template-columns: 1fr;
         }
 
-        input {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 12px;
-            background: rgba(255,255,255,.08);
-            color: white;
-            outline: none;
-        }
-
-            input::placeholder {
-                color: #cbd5e1;
-            }
-
-        .btn {
-            width: 100%;
-            padding: 16px;
-            border: none;
-            border-radius: 14px;
-            background: linear-gradient(90deg,#caa44f,#f3d07a);
-            color: #062d1b;
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .stats {
+        .form-group {
             display: flex;
             flex-direction: column;
-            gap: 20px;
         }
 
-        .stat-card {
-            background: rgba(255,255,255,.08);
-            border-radius: 18px;
-            padding: 25px;
+        .form-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .form-group label .required {
+            color: #e74c3c;
+            font-size: 16px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 12px 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2d6a54;
+            box-shadow: 0 0 0 3px rgba(45, 106, 84, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #bbb;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+
+        /* Button Groups */
+        .button-group {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .button-group label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            margin: 0;
+            font-weight: 600;
+            font-size: 13px;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            background: #f9f9f9;
+            transition: all 0.3s ease;
+            color: #666;
+        }
+
+        .button-group input[type="radio"],
+        .button-group input[type="checkbox"] {
+            cursor: pointer;
+            accent-color: #2d6a54;
+        }
+
+        /* Entry Type Button Styling */
+        .button-group input[value="prospect"]:checked + label,
+        .button-group label input[value="prospect"]:checked {
+            /* Prospect styling */
+        }
+
+        /* For radio buttons in button-group */
+        .button-group input[type="radio"]:checked + label {
+            border-color: #d4af7a;
+            background: rgba(212, 175, 122, 0.1);
+            color: #8b6f47;
+        }
+
+        .button-group input[value="prospect"]:checked ~ label.prospect-label {
+            border-color: #d4af7a;
+            background: rgba(212, 175, 122, 0.1);
+            color: #8b6f47;
+        }
+
+        /* Refactoring: Use wrapper approach */
+        .entry-type-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .entry-type-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            background: #f9f9f9;
+            transition: all 0.3s ease;
+            color: #666;
+        }
+
+        .entry-type-btn input {
+            display: none;
+        }
+
+        .entry-type-btn.prospect {
+            border-color: #d4af7a;
+            background: rgba(212, 175, 122, 0.1);
+            color: #8b6f47;
+        }
+
+        .entry-type-btn.customer {
+            border-color: #2d6a54;
+            background: rgba(45, 106, 84, 0.1);
+            color: #2d6a54;
+        }
+
+        .entry-type-btn.distributor {
+            border-color: #5b6ba8;
+            background: rgba(91, 107, 168, 0.1);
+            color: #5b6ba8;
+        }
+
+        .stage-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .stage-btn {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            color: #888;
+            transition: all 0.3s ease;
             text-align: center;
-            border: 1px solid rgba(255,215,0,.15);
+        }
+
+        .stage-btn:hover {
+            border-color: #ccc;
+            color: #666;
+        }
+
+        .stage-btn.active {
+            background: white;
+            border-color: #d4af7a;
+            color: #8b6f47;
+        }
+
+        .stage-btn.active.s1 {
+            border-color: #d4af7a;
+            background: rgba(212, 175, 122, 0.08);
+            color: #8b6f47;
+        }
+
+        .stage-btn.active.s2 {
+            border-color: #2d6a54;
+            background: rgba(45, 106, 84, 0.08);
+            color: #2d6a54;
+        }
+
+        .stage-btn.active.s3 {
+            border-color: #5b6ba8;
+            background: rgba(91, 107, 168, 0.08);
+            color: #5b6ba8;
+        }
+
+        .status-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .status-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            background: #f9f9f9;
+            transition: all 0.3s ease;
+            color: #666;
+        }
+
+        .status-btn input {
+            display: none;
+        }
+
+        .status-btn.new {
+            border-color: #f39c12;
+            background: rgba(243, 156, 18, 0.08);
+            color: #f39c12;
+        }
+
+        .status-btn.active {
+            border-color: #27ae60;
+            background: rgba(39, 174, 96, 0.08);
+            color: #27ae60;
+        }
+
+        .status-btn.inactive {
+            border-color: #e74c3c;
+            background: rgba(231, 76, 60, 0.08);
+            color: #e74c3c;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #2d6a54 0%, #1a4d3e 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(45, 106, 84, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(45, 106, 84, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Right Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .sidebar-card {
+            background: white;
+            border-radius: 16px;
+            padding: 22px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar-card.primary {
+            background: linear-gradient(135deg, #2d6a54 0%, #1a4d3e 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .prospect-count {
+            font-size: 36px;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+
+        .prospect-date {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: #e74c3c;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 12px;
+        }
+
+        .refresh-btn {
+            width: 100%;
+            padding: 10px;
+            background: white;
+            color: #2d6a54;
+            border: 2px solid #2d6a54;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .refresh-btn:hover {
+            background: #2d6a54;
+            color: white;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .stat-item {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .stat-number {
-            font-size: 40px;
-            font-weight: bold;
-            color: #facc15;
+            font-size: 32px;
+            font-weight: 700;
+            color: #2d6a54;
+            margin: 10px 0;
         }
 
         .stat-label {
-            margin-top: 8px;
-            color: #d1d5db;
+            font-size: 12px;
+            color: #888;
+            font-weight: 600;
+            text-transform: uppercase;
         }
 
-        .endpoint-box {
-            margin-top: 20px;
-            padding: 15px;
+        /* Activity Scale */
+        .activity-scale {
+            background: white;
             border-radius: 12px;
-            background: rgba(0,0,0,.25);
-            font-family: monospace;
-            word-break: break-all;
+            padding: 18px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
-        @media(max-width:900px) {
+        .activity-scale-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: #333;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
 
+        .activity-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            font-size: 12px;
+            color: #666;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .activity-dot.stalled {
+            background: #e74c3c;
+        }
+
+        .activity-dot.low {
+            background: #f39c12;
+        }
+
+        .activity-dot.healthy {
+            background: #27ae60;
+        }
+
+        .activity-dot.strong {
+            background: #2d6a54;
+        }
+
+        /* Total Registry Card */
+        .total-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-top: 12px;
+        }
+
+        .total-number {
+            font-size: 42px;
+            font-weight: 700;
+            color: #2d6a54;
+            margin: 10px 0;
+        }
+
+        .total-label {
+            font-size: 12px;
+            color: #888;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* Responsive */
+        @media (max-width: 1000px) {
             .content {
                 grid-template-columns: 1fr;
             }
 
-            h1 {
-                font-size: 32px;
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group,
+            .stage-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .top-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .page-title h2 {
+                font-size: 28px;
+            }
+
+            .form-card,
+            .sidebar-card {
+                padding: 20px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
 
+    <div class="top-header">
+        <div class="header-left">
+            <h1>HFNC Team Builder</h1>
+            <p>NUTRITION CLUB MANAGEMENT</p>
+        </div>
+        <div class="header-right">TOOL 0.1 — MPR</div>
+    </div>
+
     <div class="container">
 
-        <div class="header">
-            <div class="badge">HFNC COACH API</div>
-
-            <h1>HFNC Coaches</h1>
-
-            <div class="subtitle">
-                Manage coaches, registrations and operations from a single platform
-            </div>
+        <div class="page-title">
+            <div class="badge">TOOL 0.1</div>
+            <h2>Master People Registry</h2>
+            <p>Add & track every prospect, customer, and distributor in your network</p>
         </div>
 
         <div class="content">
 
-            <div class="card">
-
-                <div class="form-title">
-                    Coach Registration
+            <!-- Form Section -->
+            <div class="form-card">
+                <div class="form-card-header">
+                    <h3>New Entry</h3>
                 </div>
+                <div class="form-card-content">
+                    <div class="form-card-helper">Fill in the details below and hit Add to Register</div>
 
-                <div class="form-group">
-                    <label>Full Name</label>
-                    <input type="text" placeholder="Enter coach name">
+                    <form id="entryForm">
+                        <!-- Full Name and Phone -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>
+                                    👤 FULL NAME
+                                    <span class="required">*</span>
+                                </label>
+                                <input type="text" id="fullName" placeholder="e.g. Kandi Vinod" required>
+                            </div>
+                            <div class="form-group">
+                                <label>
+                                    📞 PHONE NUMBER
+                                    <span class="required">*</span>
+                                </label>
+                                <input type="tel" id="phoneNumber" placeholder="e.g. 7995818403" required>
+                            </div>
+                        </div>
+
+                        <!-- Entry Type and Invited By -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>✏️ ENTRY TYPE <span class="required">*</span></label>
+                                <select id="entryType" required>
+                                    <option value="">-- Select Entry Type --</option>
+                                    <option value="Prospect">Prospect</option>
+                                    <option value="Customer">Customer</option>
+                                    <option value="Distributor">Distributor</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>💛 INVITED BY</label>
+                                <input type="text" id="invitedBy" placeholder="e.g. ANAND">
+                            </div>
+                        </div>
+
+                        <!-- System Stage -->
+                        <div class="form-group full">
+                            <label>💾 SYSTEM STAGE <span class="required">*</span></label>
+                            <select id="systemStage" required>
+                                <option value="">-- Select System Stage --</option>
+                                <option value="S1 - Prospect">S1 - Prospect</option>
+                                <option value="S2 - Customer">S2 - Customer</option>
+                                <option value="S3 - Distributor">S3 - Distributor</option>
+                            </select>
+                            <div style="font-size: 11px; color: #999; margin-top: 8px;">Auto-assigned based on Entry Type</div>
+                        </div>
+
+                        <!-- Status -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>🟢 CURRENT STATUS <span class="required">*</span></label>
+                                <select id="currentStatus" required>
+                                    <option value="">-- Select Status --</option>
+                                    <option value="New">New</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Inactive">Inactive</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>📅 LAST CONTACT DATE</label>
+                                <input type="date" id="lastContactDate">
+                            </div>
+                        </div>
+
+                        <!-- Notes -->
+                        <div class="form-group full">
+                            <label>📌 NOTES</label>
+                            <textarea id="notes" placeholder="Any relevant notes..."></textarea>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="submit-btn">➕ Add to Register</button>
+                    </form>
                 </div>
-
-                <div class="form-group">
-                    <label>Email Address</label>
-                    <input type="email" placeholder="Enter email">
-                </div>
-
-                <div class="form-group">
-                    <label>Phone Number</label>
-                    <input type="text" placeholder="Enter phone number">
-                </div>
-
-                <button class="btn">
-                    Register Coach
-                </button>
-
             </div>
 
-            <div class="stats">
-
-                <div class="stat-card">
-                    <div class="stat-number">174</div>
-                    <div class="stat-label">Total Coaches</div>
+            <!-- Sidebar Section -->
+            <div class="sidebar">
+                <!-- Primary Stat Card -->
+                <div class="sidebar-card primary">
+                    <div style="font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;">
+                        📊 NEW PROSPECTS ADDED TODAY
+                    </div>
+                    <div class="prospect-count">0</div>
+                    <div class="prospect-date">as of today, 8 June 2026</div>
+                    <div class="status-badge">🚫 System Stalled</div>
+                    <button class="refresh-btn">⟳ Refresh</button>
                 </div>
 
-                <div class="stat-card">
-                    <div class="stat-number">6</div>
-                    <div class="stat-label">Active Coaches</div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-number">1</div>
-                    <div class="stat-label">API Endpoint</div>
-
-                    <div class="endpoint-box">
-                        /api/coaches
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-label">ACTIVE</div>
+                        <div class="stat-number">6</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">INACTIVE</div>
+                        <div class="stat-number">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">PROSPECTS</div>
+                        <div class="stat-number">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">DISTRIBUTORS</div>
+                        <div class="stat-number">0</div>
                     </div>
                 </div>
 
+                <!-- Activity Scale -->
+                <div class="activity-scale">
+                    <div class="activity-scale-title">⚡ ACTIVITY SCALE</div>
+                    <div class="activity-item">
+                        <span><span class="activity-dot stalled"></span>System Stalled</span>
+                        <span style="color: #333; font-weight: 600;">0</span>
+                    </div>
+                    <div class="activity-item">
+                        <span><span class="activity-dot low"></span>Low Activity</span>
+                        <span style="color: #333; font-weight: 600;">1–3</span>
+                    </div>
+                    <div class="activity-item">
+                        <span><span class="activity-dot healthy"></span>Healthy</span>
+                        <span style="color: #333; font-weight: 600;">4–7</span>
+                    </div>
+                    <div class="activity-item">
+                        <span><span class="activity-dot strong"></span>Strong Momentum</span>
+                        <span style="color: #333; font-weight: 600;">8+</span>
+                    </div>
+                </div>
+
+                <!-- Total Card -->
+                <div class="total-card">
+                    <div class="total-number">174</div>
+                    <div class="total-label">TOTAL PEOPLE IN REGISTRY</div>
+                </div>
             </div>
 
         </div>
-
     </div>
+
+    <script>
+        $(document).ready(function() {
+            // Form submission logic mapping HTML IDs
+            $('#entryForm').submit(function(e) {
+                e.preventDefault();
+                
+                var personData = {
+                    FullName: $('#fullName').val(),
+                    PhoneNumber: $('#phoneNumber').val(),
+                    EntryType: $('#entryType').val(),
+                    InvitedBy: $('#invitedBy').val(),
+                    CurrentStatus: $('#currentStatus').val(),
+                    SystemStage: $('#systemStage').val(),
+                    LastContactDate: $('#lastContactDate').val() ? $('#lastContactDate').val() : null,
+                    Notes: $('#notes').val()
+                }
+
+                // Send to backend via AJAX
+                $.ajax({
+                    url: '/api/PeopleRegistry/Save',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(personData),
+                    success: function (response) {
+                        alert("New entry registered successfully!");
+                        $('#entryForm')[0].reset(); 
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Error saving data. Please check if the backend is running.");
+                        console.error(error);
+                    }
+                });
+            });
+        });
+    </script>
 
 </body>
 </html>
