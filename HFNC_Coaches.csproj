@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Data\DTO\Followups\FollowUpResponseDto.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="appsettings.Development.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="bin\Debug\net8.0\appsettings.json" />
+    <Content Include="bin\Debug\net8.0\HFNC_Coaches.deps.json" />
+    <Content Include="bin\Debug\net8.0\HFNC_Coaches.runtimeconfig.json" />
+    <Content Include="bin\Debug\net8.0\HFNC_Coaches.staticwebassets.endpoints.json" />
+    <Content Include="bin\Debug\net8.0\HFNC_Coaches.staticwebassets.runtime.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="appsettings.Development.json" />
+    <None Include="bin\Debug\net8.0\Dapper.dll" />
+    <None Include="bin\Debug\net8.0\Microsoft.OpenApi.dll" />
+    <None Include="bin\Debug\net8.0\MySqlConnector.dll" />
+    <None Include="bin\Debug\net8.0\HFNC_Coaches.dll" />
+    <None Include="bin\Debug\net8.0\HFNC_Coaches.exe" />
+    <None Include="bin\Debug\net8.0\HFNC_Coaches.pdb" />
+    <None Include="bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll" />
+    <None Include="bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll" />
+    <None Include="bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+    <PackageReference Include="Dapper" Version="2.1.15" />
+    <PackageReference Include="MySqlConnector" Version="2.3.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\templates\assets\Images\" />
+  </ItemGroup>
+
+</Project>
