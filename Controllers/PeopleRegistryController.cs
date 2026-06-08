@@ -17,7 +17,7 @@ namespace HFNC_Coaches.Controllers
         {
             // Make sure your appsettings.json has "DefaultConnection" for MySQL
           //  string connectionString = configuration.GetConnectionString("DefaultConnection") ?? "server=localhost;port=3306;database=hfnc;user=root;password=Hfnc@2026;";
-            string connectionString =  "server=localhost;port=3306;database=hfnc;user=root;password=Hfnc@2026;";
+            string connectionString = "server=mibu9ojpzcmahn1uxysoyoqf;port=3306;database=hfnc;user=root;password=Hfnc@2026;";
             string connectionStringV1 = configuration.GetConnectionString("DefaultConnection") ?? "";
             _bll = new PeopleRegistryBLL(connectionString);
         }
