@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S2 Customers - HFNC Team Builder</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a4d3e 0%, #2d6a54 50%, #1f5843 100%);
+            min-height: 100vh;
+            color: #333;
+            padding: 20px;
+        }
+
+        .top-header {
+            background: linear-gradient(135deg, #2d6a54 0%, #1a4d3e 100%);
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            color: white;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+
+        .header-left h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .header-left p {
+            font-size: 12px;
+            color: #d4af7a;
+            letter-spacing: 1px;
+            margin: 4px 0 0 0;
+        }
+
+        .header-right {
+            background: #d4af7a;
+            color: #1a4d3e;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 15px;
+            border-radius: 8px;
+            margin-right: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(-2px);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #d4af7a;
+            color: #1a4d3e;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .page-title h2 {
+            font-size: 38px;
+            color: white;
+            margin: 10px 0;
+            font-weight: 700;
+        }
+
+        .page-title p {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 16px;
+            padding: 0;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .form-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #5b6ba8 0%, #3e4a78 100%);
+            color: white;
+            padding: 20px 35px;
+        }
+
+            .form-card-header::before {
+                content: '🛍️';
+                font-size: 24px;
+            }
+
+            .form-card-header h3 {
+                font-size: 18px;
+                color: white;
+                font-weight: 700;
+                margin: 0;
+            }
+
+        .form-card-content {
+            padding: 35px;
+        }
+
+        .form-card-helper {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 18px;
+        }
+
+            .form-row.full {
+                grid-template-columns: 1fr;
+            }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+            .form-group label {
+                font-size: 13px;
+                font-weight: 600;
+                color: #333;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+                gap: 4px;
+            }
+
+                .form-group label .required {
+                    color: #e74c3c;
+                    font-size: 16px;
+                }
+
+            .form-group input,
+            .form-group select {
+                padding: 12px 14px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                font-size: 13px;
+                color: #333;
+                transition: all 0.3s ease;
+            }
+
+                .form-group input:focus,
+                .form-group select:focus {
+                    outline: none;
+                    border-color: #5b6ba8;
+                    box-shadow: 0 0 0 3px rgba(91, 107, 168, 0.1);
+                }
+
+                .form-group input::placeholder {
+                    color: #bbb;
+                }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #5b6ba8 0%, #3e4a78 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(91, 107, 168, 0.3);
+        }
+
+            .submit-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 16px rgba(91, 107, 168, 0.4);
+            }
+
+        /* Statistics Card Styles (matching Master People Registry) */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .stat-item {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #2d6a54;
+            margin: 10px 0;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #888;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 1000px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-header">
+        <div class="header-left" style="display: flex; align-items: center;">
+            <a href="../index.html" class="back-btn">⬅ Back</a>
+            <div>
+                <h1>HFNC Team Builder</h1>
+                <p>NUTRITION CLUB MANAGEMENT</p>
+            </div>
+        </div>
+        <div class="header-right">TOOL 0.2 — S2 CUSTOMERS</div>
+    </div>
+
+    <div class="container">
+
+        <div class="page-title">
+            <div class="badge">TOOL 0.2</div>
+            <h2>S2 Customer Management</h2>
+            <p>Enroll new customers and track their product purchases and reorder dates.</p>
+        </div>
+
+        <div class="content">
+            <div class="form-card">
+                <div class="form-card-header">
+                    <h3>S2 Customer Enrollment</h3>
+                </div>
+                <div class="form-card-content">
+                    <div class="form-card-helper">Fill in the details below to add a new S2 Customer</div>
+
+                    <form id="s2CustomerForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>👤 NAME <span class="required">*</span></label>
+                                <input type="text" id="s2Name" required placeholder="e.g. Kandi Vinod">
+                            </div>
+                            <div class="form-group">
+                                <label>📞 CONTACT NUMBER <span class="required">*</span></label>
+                                <input type="tel" id="s2ContactNumber" required placeholder="e.g. 7995818403">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>📦 PRODUCT <span class="required">*</span></label>
+                                <input type="text" id="s2Product" required placeholder="e.g. F1 Shake">
+                            </div>
+                            <div class="form-group">
+                                <label>📅 FIRST PURCHASE DATE <span class="required">*</span></label>
+                                <input type="date" id="s2FirstPurchaseDate" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>🤝 COACH NAME <span class="required">*</span></label>
+                                <select id="s2CoachName" required>
+                                    <option value="">-- Select Coach --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>🟢 ACTIVE <span class="required">*</span></label>
+                                <select id="s2Active" required>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row full">
+                            <div class="form-group">
+                                <label>💬 RESPONSE <span class="required">*</span></label>
+                                <select id="s2Response" required>
+                                    <option value="Good Response">Good Response</option>
+                                    <option value="No Response">No Response</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="submit-btn">➕ Save S2 Customer</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Sidebar Statistics Section -->
+            <div class="sidebar">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-label">Active Customers (Last 30 Days)</div>
+                        <div class="stat-number" id="activeCustomersLast30Days">0</div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            loadCoaches();
+            loadCustomerStats();
+
+            $('#s2CustomerForm').submit(function (e) {
+                e.preventDefault();
+
+                var customerData = {
+                    Name: $('#s2Name').val(),
+                    ContactNumber: $('#s2ContactNumber').val(),
+                    Product: $('#s2Product').val(),
+                    FirstPurchaseDate: $('#s2FirstPurchaseDate').val(),
+                    CoachName: $('#s2CoachName').val(),
+                    Active: $('#s2Active').val(),
+                    Response: $('#s2Response').val()
+                };
+
+                $.ajax({
+                    url: '/api/S2Customer/Save',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(customerData),
+                    success: function (response) {
+                        alert(response.message);
+                        $('#s2CustomerForm')[0].reset();
+                        loadCustomerStats(); // Refresh the stat card dynamically
+                    },
+                    error: function (xhr) {
+                        alert('An error occurred while saving S2 Customer.');
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+
+        function loadCoaches() {
+            $.ajax({
+                url: '/api/InvitePeople/Get',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    var s2CoachDropdown = $('#s2CoachName');
+                    s2CoachDropdown.empty();
+                    s2CoachDropdown.append('<option value="">-- Select Coach --</option>');
+                    $.each(data, function (index, item) {
+                        s2CoachDropdown.append($('<option></option>').val(item.name).text(item.name));
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error loading coaches: ', error);
+                }
+            });
+        }
+
+        function loadCustomerStats() {
+            $.ajax({
+                url: '/api/S2Customer/stats/active-last-30-days',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    // Display value from the API endpoint
+                    $('#activeCustomersLast30Days').text(data.activeCustomersLast30Days);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error loading customer stats: ', error);
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>

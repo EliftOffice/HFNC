@@ -16,8 +16,8 @@ namespace HFNC_Coaches.Controllers
         public PeopleRegistryController(IConfiguration configuration)
         {
             // Make sure your appsettings.json has "DefaultConnection" for MySQL
-           // string connectionString = configuration.GetConnectionString("DefaultConnection") ?? "server=localhost;port=3306;database=hfnc;user=root;password=Hfnc@2026;";
-            string connectionString = "server=mibu9ojpzcmahn1uxysoyoqf;port=3306;database=hfnc;user=root;password=Hfnc@2026;";
+            string connectionString = configuration.GetConnectionString("DefaultConnection") ?? "server=localhost;port=3306;database=hfnc;user=root;password=Hfnc@2026;";
+           // string connectionString = "server=mibu9ojpzcmahn1uxysoyoqf;port=3306;database=hfnc;user=root;password=Hfnc@2026;";
             string connectionStringV1 = configuration.GetConnectionString("DefaultConnection") ?? "";
             _bll = new PeopleRegistryBLL(connectionString);
         }
@@ -109,6 +109,21 @@ namespace HFNC_Coaches.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine($"Delete Controller Error: {ex.Message}");
+                return StatusCode(500, new { message = $"Internal server error: {ex.Message}" });
+            }
+        }
+
+        [HttpGet("DashboardStats")]
+        public IActionResult GetDashboardStats()
+        {
+            try
+            {
+                var stats = _bll.GetDashboardStats();
+                return Ok(stats);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"DashboardStats Controller Error: {ex.Message}");
                 return StatusCode(500, new { message = $"Internal server error: {ex.Message}" });
             }
         }

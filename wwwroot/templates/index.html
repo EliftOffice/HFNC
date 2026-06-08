@@ -56,6 +56,25 @@
             letter-spacing: 1px;
         }
 
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 15px;
+            border-radius: 8px;
+            margin-right: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(-2px);
+        }
+
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -387,6 +406,40 @@
             text-transform: uppercase;
         }
 
+        .info-card {
+            background: white;
+            border-radius: 12px;
+            padding: 18px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-top: 12px;
+        }
+
+        .info-card-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: #333;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .info-card-item {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .info-card-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-card-highlight {
+            font-weight: 700;
+            color: #2d6a54;
+        }
+
         /* Data Grid */
         .data-grid-card {
             background: white;
@@ -506,9 +559,12 @@
 <body>
 
     <div class="top-header">
-        <div class="header-left">
-            <h1>HFNC Team Builder</h1>
-            <p>NUTRITION CLUB MANAGEMENT</p>
+        <div class="header-left" style="display: flex; align-items: center;">
+            <a href="../index.html" class="back-btn">⬅ Back</a>
+            <div>
+                <h1>HFNC Team Builder</h1>
+                <p>NUTRITION CLUB MANAGEMENT</p>
+            </div>
         </div>
         <div class="header-right">TOOL 0.1 — MPR</div>
     </div>
@@ -523,7 +579,8 @@
 
         <div class="content">
 
-            <!-- Form Section -->
+            <!-- Wrapper column to prevent breaking grid layout when stacking 2 forms -->
+            <!-- Master People Entry Form -->
             <div class="form-card">
                 <div class="form-card-header">
                     <h3>New Entry</h3>
@@ -606,12 +663,12 @@
             <div class="sidebar" style="display:no">
                 <div class="sidebar-card primary">
                     <div style="font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;">
-                        📊 NEW PROSPECTS ADDED TODAY
+                        📊 NEW PEOPLE ADDED TODAY
                     </div>
                     <div class="prospect-count" id="todayCount">0</div>
-                    <div class="prospect-date">as of today, 8 June 2026</div>
-                    <div class="status-badge">🚫 System Stalled</div>
-                    <button class="refresh-btn" onclick="loadPeople()">⟳ Refresh</button>
+                    <div class="prospect-date" id="prospectDateLabel">as of today</div>
+                    <div class="status-badge" id="statusBadge">🚫 System Stalled</div>
+                    <button class="refresh-btn" onclick="refreshData()">⟳ Refresh</button>
                 </div>
 
                 <div class="stats-grid">
@@ -653,6 +710,23 @@
                     </div>
                 </div>
 
+                <!-- Static Info Card -->
+                <div class="info-card">
+                    <div class="info-card-title">ℹ️ HOW TO FILL THE SHEET</div>
+                    <div class="info-card-item">
+                        <span>Entry Type: <b>Prospect</b></span>
+                        <span>➔ Stage: <span class="info-card-highlight">S1</span></span>
+                    </div>
+                    <div class="info-card-item">
+                        <span>Entry Type: <b>Customer</b></span>
+                        <span>➔ Stage: <span class="info-card-highlight">S2</span></span>
+                    </div>
+                    <div class="info-card-item">
+                        <span>Entry Type: <b>Distributor</b></span>
+                        <span>➔ Stage: <span class="info-card-highlight">S3</span></span>
+                    </div>
+                </div>
+
                 <div class="total-card">
                     <div class="total-number" id="totalCount">0</div>
                     <div class="total-label">TOTAL PEOPLE IN REGISTRY</div>
@@ -686,8 +760,13 @@
 
     <script>
         $(document).ready(function () {
-            loadPeople();
-            loadInviters();
+            // Set current date string
+            var today = new Date();
+            var options = { day: 'numeric', month: 'long', year: 'numeric' };
+            $('#prospectDateLabel').text('as of today, ' + today.toLocaleDateString('en-GB', options));
+
+            // Initial loads
+            refreshData();
 
 
             // Auto-select and disable System Stage based on Entry Type
@@ -736,7 +815,7 @@
                     success: function (response) {
                         alert(response.message);
                         resetForm();
-                        loadPeople();
+                        refreshData();
                     },
                     error: function (xhr) {
                         alert('An error occurred. Please check the console.');
@@ -781,7 +860,7 @@
                         type: 'DELETE',
                         success: function (response) {
                             alert(response.message);
-                            loadPeople();
+                            refreshData();
                         },
                         error: function () {
                             alert('Error deleting person.');
@@ -790,6 +869,12 @@
                 }
             });
         });
+
+        function refreshData() {
+            loadPeople();
+            loadInviters();
+            loadDashboardStats();
+        }
 
         function loadInviters() {
             $.ajax({
@@ -810,6 +895,28 @@
             });
         }
 
+        function loadDashboardStats() {
+            $.ajax({
+                url: '/api/PeopleRegistry/DashboardStats',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    $('#todayCount').text(data.todayCount);
+                    $('#activeCount').text(data.activeCount);
+                    $('#inactiveCount').text(data.inactiveCount);
+                    $('#prospectCount').text(data.prospectCount);
+                    $('#distributorCount').text(data.distributorCount);
+                    
+                    var badge = $('#statusBadge');
+                    badge.text(data.systemHealthText);
+                    badge.css('background-color', data.systemHealthColor);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error loading dashboard stats: ', error);
+                }
+            });
+        }
+
         function loadPeople() {
             $.ajax({
                 url: '/api/PeopleRegistry/Get',
@@ -819,14 +926,7 @@
                     var tbody = $('#peopleTableBody');
                     tbody.empty();
 
-                    var active = 0, inactive = 0, prospects = 0, distributors = 0;
-
                     $.each(data, function (index, person) {
-                        if (person.currentStatus === 'Active') active++;
-                        if (person.currentStatus === 'Inactive') inactive++;
-                        if (person.entryType === 'Prospect') prospects++;
-                        if (person.entryType === 'Distributor') distributors++;
-
                         var row = '<tr>' +
                             '<td>' + person.id + '</td>' +
                             '<td>' + person.fullName + '</td>' +
@@ -842,10 +942,6 @@
                     });
 
                     $('#totalCount').text(data.length);
-                    $('#activeCount').text(active);
-                    $('#inactiveCount').text(inactive);
-                    $('#prospectCount').text(prospects);
-                    $('#distributorCount').text(distributors);
                 },
                 error: function (xhr, status, error) {
                     console.error('Error loading data: ', error);

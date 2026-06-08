@@ -62,5 +62,34 @@ namespace HFNC_Coaches.Business.BLL
                 throw;
             }
         }
+
+        public DashboardStatsDTO GetDashboardStats()
+        {
+            var stats = _dal.GetDashboardStats();
+
+            // Activity Scale Logic based on Today's count
+            if (stats.TodayCount <= 0)
+            {
+                stats.SystemHealthText = "🚫 System Stalled";
+                stats.SystemHealthColor = "#e74c3c"; // Red
+            }
+            else if (stats.TodayCount >= 1 && stats.TodayCount <= 3)
+            {
+                stats.SystemHealthText = "⚠️ Low Activity";
+                stats.SystemHealthColor = "#f39c12"; // Orange
+            }
+            else if (stats.TodayCount >= 4 && stats.TodayCount <= 7)
+            {
+                stats.SystemHealthText = "✅ Healthy";
+                stats.SystemHealthColor = "#27ae60"; // Green
+            }
+            else
+            {
+                stats.SystemHealthText = "🔥 Strong Momentum";
+                stats.SystemHealthColor = "#2d6a54"; // Dark Green
+            }
+
+            return stats;
+        }
     }
 }

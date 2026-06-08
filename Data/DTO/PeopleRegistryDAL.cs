@@ -20,7 +20,7 @@ namespace HFNC_Coaches.Data.DAL
             {
                 using (MySqlConnection conn = new MySqlConnection(_connectionString))
                 {
-                    string query = @"INSERT INTO people_registry 
+                    string query = @"INSERT INTO master_people_registry 
                                 (full_name, phone_number, entry_type, invited_by, current_status, system_stage, last_contact_date, notes) 
                                 VALUES (@FullName, @PhoneNumber, @EntryType, @InvitedBy, @CurrentStatus, @SystemStage, @LastContactDate, @Notes)";
 
@@ -53,7 +53,7 @@ namespace HFNC_Coaches.Data.DAL
             List<PeopleRegistryDTO> list = new List<PeopleRegistryDTO>();
             using (MySqlConnection conn = new MySqlConnection(_connectionString))
             {
-                string query = "SELECT id, full_name as FullName, phone_number as PhoneNumber, entry_type as EntryType, invited_by as InvitedBy, current_status as CurrentStatus, system_stage as SystemStage, last_contact_date as LastContactDate, notes as Notes FROM people_registry ORDER BY id DESC";
+                string query = "SELECT id, full_name as FullName, phone_number as PhoneNumber, entry_type as EntryType, invited_by as InvitedBy, current_status as CurrentStatus, system_stage as SystemStage, last_contact_date as LastContactDate, notes as Notes FROM master_people_registry ORDER BY id DESC";
                 using (MySqlCommand cmd = new MySqlCommand(query, conn))
                 {
                     conn.Open();
@@ -86,7 +86,7 @@ namespace HFNC_Coaches.Data.DAL
             {
                 using (var conn = new MySqlConnection(_connectionString))
                 {
-                    string query = "SELECT id, full_name as FullName, phone_number as PhoneNumber, entry_type as EntryType, invited_by as InvitedBy, current_status as CurrentStatus, system_stage as SystemStage, last_contact_date as LastContactDate, notes as Notes FROM people_registry WHERE id = @Id";
+                    string query = "SELECT id, full_name as FullName, phone_number as PhoneNumber, entry_type as EntryType, invited_by as InvitedBy, current_status as CurrentStatus, system_stage as SystemStage, last_contact_date as LastContactDate, notes as Notes FROM master_people_registry WHERE id = @Id";
                     using (var cmd = new MySqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@Id", id);
@@ -126,7 +126,7 @@ namespace HFNC_Coaches.Data.DAL
             {
                 using (var conn = new MySqlConnection(_connectionString))
                 {
-                    string query = @"UPDATE people_registry SET 
+                    string query = @"UPDATE master_people_registry SET 
                                         full_name = @FullName, 
                                         phone_number = @PhoneNumber, 
                                         entry_type = @EntryType, 
@@ -167,7 +167,7 @@ namespace HFNC_Coaches.Data.DAL
             {
                 using (var conn = new MySqlConnection(_connectionString))
                 {
-                    string query = "DELETE FROM people_registry WHERE id = @Id";
+                    string query = "DELETE FROM master_people_registry WHERE id = @Id";
                     using (var cmd = new MySqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@Id", id);
@@ -181,6 +181,44 @@ namespace HFNC_Coaches.Data.DAL
                 Console.WriteLine($"DAL Delete Error: {ex.Message}");
                 throw;
             }
+        }
+
+        public DashboardStatsDTO GetDashboardStats()
+        {
+            DashboardStatsDTO stats = new DashboardStatsDTO();
+            try
+            {
+                using (var conn = new MySqlConnection(_connectionString))
+                {
+                    string query = @"SELECT 
+                                        SUM(CASE WHEN DATE(created_at) = CURDATE() THEN 1 ELSE 0 END) as TodayCount,
+                                        SUM(CASE WHEN current_status = 'Active' THEN 1 ELSE 0 END) as ActiveCount,
+                                        SUM(CASE WHEN current_status = 'Inactive' THEN 1 ELSE 0 END) as InactiveCount,
+                                        SUM(CASE WHEN entry_type = 'Prospect' THEN 1 ELSE 0 END) as ProspectCount,
+                                        SUM(CASE WHEN entry_type = 'Distributor' THEN 1 ELSE 0 END) as DistributorCount
+                                     FROM master_people_registry";
+                    using (var cmd = new MySqlCommand(query, conn))
+                    {
+                        conn.Open();
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                stats.TodayCount = reader["TodayCount"] != DBNull.Value ? Convert.ToInt32(reader["TodayCount"]) : 0;
+                                stats.ActiveCount = reader["ActiveCount"] != DBNull.Value ? Convert.ToInt32(reader["ActiveCount"]) : 0;
+                                stats.InactiveCount = reader["InactiveCount"] != DBNull.Value ? Convert.ToInt32(reader["InactiveCount"]) : 0;
+                                stats.ProspectCount = reader["ProspectCount"] != DBNull.Value ? Convert.ToInt32(reader["ProspectCount"]) : 0;
+                                stats.DistributorCount = reader["DistributorCount"] != DBNull.Value ? Convert.ToInt32(reader["DistributorCount"]) : 0;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"DAL GetDashboardStats Error: {ex.Message}");
+            }
+            return stats;
         }
     }
 }
