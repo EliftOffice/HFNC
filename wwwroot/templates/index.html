@@ -555,7 +555,9 @@
                             </div>
                             <div class="form-group">
                                 <label>💛 INVITED BY</label>
-                                <input type="text" id="invitedBy" placeholder="e.g. ANAND">
+                                <select id="invitedBy">
+                                    <option value="">-- Select Inviter --</option>
+                                </select>
                             </div>
                         </div>
 
@@ -601,7 +603,7 @@
             </div>
 
             <!-- Sidebar -->
-            <div class="sidebar" style="display:none">
+            <div class="sidebar" style="display:no">
                 <div class="sidebar-card primary">
                     <div style="font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;">
                         📊 NEW PROSPECTS ADDED TODAY
@@ -685,9 +687,30 @@
     <script>
         $(document).ready(function () {
             loadPeople();
+            loadInviters();
+
+
+            // Auto-select and disable System Stage based on Entry Type
+            $('#entryType').change(function () {
+                var type = $(this).val();
+                var $stage = $('#systemStage');
+                if (type === 'Prospect') {
+                    $stage.val('S1 - Prospect').prop('disabled', true);
+                } else if (type === 'Customer') {
+                    $stage.val('S2 - Customer').prop('disabled', true);
+                } else if (type === 'Distributor') {
+                    $stage.val('S3 - Distributor').prop('disabled', true);
+                } else {
+                    $stage.val('').prop('disabled', false);
+                }
+            });
+
 
             $('#entryForm').submit(function (e) {
                 e.preventDefault();
+
+
+
 
                 var personData = {
                     Id: $(this).data('editing-id') || 0,
@@ -767,6 +790,25 @@
                 }
             });
         });
+
+        function loadInviters() {
+            $.ajax({
+                url: '/api/InvitePeople/Get',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    var dropdown = $('#invitedBy');
+                    dropdown.empty();
+                    dropdown.append('<option value="">-- Select Inviter --</option>');
+                    $.each(data, function (index, item) {
+                        dropdown.append($('<option></option>').val(item.name).text(item.name));
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error loading inviters: ', error);
+                }
+            });
+        }
 
         function loadPeople() {
             $.ajax({
