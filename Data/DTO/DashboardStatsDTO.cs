@@ -6,6 +6,7 @@ namespace HFNC_Coaches.Data.DTO
     {
         public int TodayCount { get; set; }
         public int ActiveCount { get; set; }
+        public int CustomerCount { get; set; }
         public int InactiveCount { get; set; }
         public int ProspectCount { get; set; }
         public int DistributorCount { get; set; }

@@ -677,8 +677,8 @@
                         <div class="stat-number" id="activeCount">0</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-label">INACTIVE</div>
-                        <div class="stat-number" id="inactiveCount">0</div>
+                        <div class="stat-label">Customer</div>
+                        <div class="stat-number" id="CustomerCount">0</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-label">PROSPECTS</div>
@@ -903,7 +903,7 @@
                 success: function (data) {
                     $('#todayCount').text(data.todayCount);
                     $('#activeCount').text(data.activeCount);
-                    $('#inactiveCount').text(data.inactiveCount);
+                    $('#CustomerCount').text(data.customer);
                     $('#prospectCount').text(data.prospectCount);
                     $('#distributorCount').text(data.distributorCount);
                     

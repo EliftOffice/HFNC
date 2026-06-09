@@ -193,7 +193,7 @@ namespace HFNC_Coaches.Data.DAL
                     string query = @"SELECT 
                                         SUM(CASE WHEN DATE(created_at) = CURDATE() THEN 1 ELSE 0 END) as TodayCount,
                                         SUM(CASE WHEN current_status = 'Active' THEN 1 ELSE 0 END) as ActiveCount,
-                                        SUM(CASE WHEN current_status = 'Inactive' THEN 1 ELSE 0 END) as InactiveCount,
+                                        SUM(CASE WHEN entry_type = 'Customer' THEN 1 ELSE 0 END) as CustomerCount,
                                         SUM(CASE WHEN entry_type = 'Prospect' THEN 1 ELSE 0 END) as ProspectCount,
                                         SUM(CASE WHEN entry_type = 'Distributor' THEN 1 ELSE 0 END) as DistributorCount
                                      FROM master_people_registry";
@@ -206,7 +206,7 @@ namespace HFNC_Coaches.Data.DAL
                             {
                                 stats.TodayCount = reader["TodayCount"] != DBNull.Value ? Convert.ToInt32(reader["TodayCount"]) : 0;
                                 stats.ActiveCount = reader["ActiveCount"] != DBNull.Value ? Convert.ToInt32(reader["ActiveCount"]) : 0;
-                                stats.InactiveCount = reader["InactiveCount"] != DBNull.Value ? Convert.ToInt32(reader["InactiveCount"]) : 0;
+                                stats.CustomerCount = reader["CustomerCount"] != DBNull.Value ? Convert.ToInt32(reader["CustomerCount"]) : 0;
                                 stats.ProspectCount = reader["ProspectCount"] != DBNull.Value ? Convert.ToInt32(reader["ProspectCount"]) : 0;
                                 stats.DistributorCount = reader["DistributorCount"] != DBNull.Value ? Convert.ToInt32(reader["DistributorCount"]) : 0;
                             }
