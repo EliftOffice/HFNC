@@ -63,14 +63,14 @@ namespace HFNC_Coaches
             app.MapGet("/", async context =>
             {
                 context.Response.ContentType = "text/html";
-                await context.Response.SendFileAsync(Path.Combine(app.Environment.ContentRootPath, "wwwroot", "templates", "index.html"));
+                await context.Response.SendFileAsync(Path.Combine(app.Environment.ContentRootPath, "wwwroot", "index.html"));
             });
 
-            app.MapGet("/templates/index.html", async context =>
-            {
-                context.Response.ContentType = "text/html";
-                await context.Response.SendFileAsync(Path.Combine(app.Environment.ContentRootPath, "wwwroot", "templates", "index.html"));
-            });
+            //app.MapGet("/templates/index.html", async context =>
+            //{
+            //    context.Response.ContentType = "text/html";
+            //    await context.Response.SendFileAsync(Path.Combine(app.Environment.ContentRootPath, "wwwroot", "templates", "index.html"));
+            //});
 
             app.Run();
         }
